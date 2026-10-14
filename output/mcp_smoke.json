@@ -1,0 +1,175 @@
+{
+  "description": "Smoke test of the campus-customs MCP server from inside the vibe coder (Claude Code). The server is registered in .mcp.json at the project root and was called through Claude Code's MCP connection, not by running Python directly.",
+  "vibe_coder": "Claude Code 2.1.295 (Claude desktop app, Code tab), session opened in the HW 5 project folder",
+  "mcp_config": ".mcp.json",
+  "mcp_server": "campus-customs (mcp_server/server.py, FastMCP, stdio)",
+  "database": "data/campus_customs_new.db",
+  "run_date": "2026-10-13",
+  "shop_today": "2026-08-31 (desk.date_today)",
+  "student_prompt": "ok P4, add the MCP server to this project so you can call the tools. Save the connection JSON text in the .mcp.json at the project root. Make sure you can call it. ... test each of the three MCP tools, save the evidence in the mcp_smoke.json. for every tool, make sure you have 1. the prompt you asked the vibe coder. 2. the tool name. 3. the tool output (must have value match in the campus customs new file).",
+  "tests": [
+    {
+      "ticket": 101,
+      "prompt_source": "vibe coder's per-tool request, written from the student's prompt above",
+      "prompt": "Ticket 101 links invoice 501. Use the campus-customs MCP tool to look up invoice 501: is it overdue as of the shop's today, by how many days, and will the vendor ship?",
+      "tool": "mcp__campus-customs__get_invoice_status",
+      "arguments": {
+        "invoice_id": 501
+      },
+      "output": {
+        "found": true,
+        "today": "2026-08-31",
+        "invoice_id": 501,
+        "description": "Rush reprint CC-TEE-WHITE S",
+        "amount": 840,
+        "due_date": "2026-08-28",
+        "status": "open",
+        "is_overdue": true,
+        "days_overdue": 3,
+        "vendor": {
+          "id": 1,
+          "name": "Bulldog Print Co",
+          "specialty": "apparel reprint",
+          "lead_days": 5
+        },
+        "vendor_open_invoices": 1,
+        "vendor_open_amount": 840,
+        "vendor_will_ship": false
+      },
+      "db_check": {
+        "sql": "SELECT * FROM invoices WHERE id = 501; SELECT * FROM vendors WHERE id = 1; SELECT date_today FROM desk;",
+        "db_rows": {
+          "invoices": {
+            "id": 501,
+            "vendor_id": 1,
+            "amount": 840.0,
+            "due_date": "2026-08-28",
+            "status": "open",
+            "description": "Rush reprint CC-TEE-WHITE S"
+          },
+          "vendors": {
+            "id": 1,
+            "name": "Bulldog Print Co",
+            "specialty": "apparel reprint",
+            "lead_days": 5
+          },
+          "desk": {
+            "date_today": "2026-08-31"
+          }
+        },
+        "derived": "days_overdue = 2026-08-31 - 2026-08-28 = 3; vendor 1 has 1 open invoice, so vendor_will_ship = false",
+        "matches_db": true
+      },
+      "rerun_2026-10-13_after_move_to_HW5": "identical output"
+    },
+    {
+      "ticket": 102,
+      "prompt_source": "vibe coder's per-tool request, written from the student's prompt above",
+      "prompt": "Ticket 102 is Elm City Properties' rent notice for lease 1. Use the campus-customs MCP tool to check lease 1: what is the rent, when is it due, and how many days until it is due?",
+      "tool": "mcp__campus-customs__get_lease_status",
+      "arguments": {
+        "lease_id": 1
+      },
+      "output": {
+        "found": true,
+        "today": "2026-08-31",
+        "lease_id": 1,
+        "space_name": "Chapel Street shop",
+        "landlord": "Elm City Properties",
+        "monthly_rent": 2400,
+        "next_due": "2026-09-02",
+        "days_until_due": 2,
+        "is_overdue": false,
+        "notes": null
+      },
+      "db_check": {
+        "sql": "SELECT * FROM leases WHERE id = 1; SELECT date_today FROM desk;",
+        "db_rows": {
+          "leases": {
+            "id": 1,
+            "space_name": "Chapel Street shop",
+            "landlord": "Elm City Properties",
+            "monthly_rent": 2400.0,
+            "next_due": "2026-09-02",
+            "notes": null
+          },
+          "desk": {
+            "date_today": "2026-08-31"
+          }
+        },
+        "derived": "days_until_due = 2026-09-02 - 2026-08-31 = 2, so not overdue",
+        "matches_db": true
+      },
+      "rerun_2026-10-13_after_move_to_HW5": "identical output"
+    },
+    {
+      "ticket": 103,
+      "prompt_source": "vibe coder's per-tool request, written from the student's prompt above",
+      "prompt": "Ticket 103: the Yale AI Club wants 20 CC-HOOD-NAVY hoodies in size M. Use the campus-customs MCP tool to check stock: how many are on hand, what is the shortfall, and what are the cost, list price and margin?",
+      "tool": "mcp__campus-customs__check_stock",
+      "arguments": {
+        "sku": "CC-HOOD-NAVY",
+        "size": "M",
+        "qty_needed": 20
+      },
+      "output": {
+        "found": true,
+        "sku": "CC-HOOD-NAVY",
+        "name": "Basic Hoodie Big Yale",
+        "location": "Aisle A",
+        "size": "M",
+        "size_exists": true,
+        "qty_on_hand": 8,
+        "qty_needed": 20,
+        "shortfall": 12,
+        "can_fill_from_stock": false,
+        "all_sizes": {
+          "L": 14,
+          "M": 8,
+          "S": 4,
+          "XL": 6
+        },
+        "unit_cost": 22,
+        "list_price": 58,
+        "margin_per_unit": 36
+      },
+      "db_check": {
+        "sql": "SELECT size, qty FROM inventory WHERE sku = 'CC-HOOD-NAVY'; SELECT * FROM pricing WHERE sku = 'CC-HOOD-NAVY';",
+        "db_rows": {
+          "inventory": [
+            {
+              "size": "L",
+              "qty": 14
+            },
+            {
+              "size": "M",
+              "qty": 8
+            },
+            {
+              "size": "S",
+              "qty": 4
+            },
+            {
+              "size": "XL",
+              "qty": 6
+            }
+          ],
+          "pricing": {
+            "sku": "CC-HOOD-NAVY",
+            "unit_cost": 22.0,
+            "list_price": 58.0
+          }
+        },
+        "derived": "shortfall = 20 - 8 = 12; margin_per_unit = 58 - 22 = 36",
+        "matches_db": true
+      },
+      "rerun_2026-10-13_after_move_to_HW5": "identical output"
+    }
+  ],
+  "summary": {
+    "tools_tested": 3,
+    "all_outputs_match_db": true,
+    "database_unchanged_after_tests": "yes; both .db files still hash to SHA-1 f447ca6a2766a90f3c1f81215c8f774ab109ea4c (the tools are read-only)"
+  },
+  "student_prompt_note": "student_prompt is what the student actually typed (one instruction covering all three tools). Each test's prompt is the ticket-specific request the vibe coder turned that instruction into before calling the tool."
+}

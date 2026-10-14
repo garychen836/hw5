@@ -1,0 +1,255 @@
+{
+  "run": "Graded run, 2026-10-14 (Problem 9). Database reset from data/campus_customs.db first; every ticket was started from the React board.",
+  "shop_today": "2026-08-31",
+  "starting_checking_balance": 3400.0,
+  "ending_checking_balance": 160.0,
+  "ending_balance_matches_cash_accounts": true,
+  "tickets": [
+    {
+      "id": 101,
+      "type": "customer_order",
+      "requester": "Tauhid Zaman",
+      "final_status": "resolved",
+      "outcome": "Size S of CC-TEE-WHITE was out of stock (0 on hand). The rush reprint of that exact tee was held by Bulldog Print Co because invoice #501 ($840, 3 days overdue) was unpaid. Accounting prepared payment request #1; a human approved it, so invoice 501 is paid and the reprint can ship (5-day lead time). Customer Service drafted a reply to Tauhid Zaman (draft #1, not sent).",
+      "run_id": "run-20261014-012758-c1a04d",
+      "handoffs": [
+        "boss -> inventory",
+        "boss -> accounting",
+        "inventory -> accounting",
+        "boss -> customer_service"
+      ],
+      "agent_contributions": [
+        {
+          "agent": "boss",
+          "did": "Read ticket 101, checked cash, coordinated the work, and set the ticket to waiting on human approval.",
+          "times_asked": 1,
+          "mcp_tools_used": [
+            "get_cash_balance",
+            "get_ticket",
+            "update_ticket_status"
+          ]
+        },
+        {
+          "agent": "inventory",
+          "did": "Confirmed zero CC-TEE-WHITE size S in stock, a shortfall of 1, and vendor lead time of 5 days; invoice 501 blocks shipment.",
+          "times_asked": 1,
+          "mcp_tools_used": [
+            "check_stock",
+            "find_vendors",
+            "get_invoice_status",
+            "get_ticket"
+          ],
+          "prepared": [
+            "Handed invoice 501 payment preparation to Accounting; Accounting confirmed existing payment request #1 is pending."
+          ]
+        },
+        {
+          "agent": "accounting",
+          "did": "Confirmed invoice 501 is $840 and 3 days overdue, and verified pending payment request #1; no duplicate purchase order is needed.",
+          "times_asked": 2,
+          "mcp_tools_used": [
+            "get_cash_balance",
+            "get_invoice_status",
+            "get_ticket",
+            "list_payment_requests",
+            "prepare_payment"
+          ],
+          "prepared": [
+            "Existing payment request #1 for invoice 501, $840.00 to Bulldog Print Co, pending; no duplicate request prepared."
+          ]
+        },
+        {
+          "agent": "customer_service",
+          "did": "Saved customer message draft #1 explaining the delay without promising a fulfillment date.",
+          "times_asked": 1,
+          "mcp_tools_used": [
+            "draft_customer_message",
+            "get_ticket"
+          ],
+          "prepared": [
+            "Draft #1 saved for Tauhid Zaman."
+          ]
+        }
+      ],
+      "human_approvals": [
+        {
+          "action": "approve_payment",
+          "payment_request_id": 1,
+          "payment_id": 1,
+          "what": "Vendor invoice #501 to Bulldog Print Co",
+          "amount": 840.0,
+          "approved_by": "Gary Chen",
+          "at": "2026-10-14T01:28:36.110",
+          "checking": "$3,400.00 -> $2,560.00"
+        }
+      ],
+      "cash_change": -840.0,
+      "drafts_not_sent": [
+        "#1 to Tauhid Zaman: Update on your Bulldog tee"
+      ],
+      "usage": {
+        "requests": 21,
+        "input_tokens": 58078,
+        "cached_tokens": 49875,
+        "output_tokens": 2223,
+        "cached_pct": 85.9,
+        "model": "gpt-6-luna"
+      }
+    },
+    {
+      "id": 102,
+      "type": "rent_notice",
+      "requester": "Elm City Properties",
+      "final_status": "resolved",
+      "outcome": "Facilities confirmed the landlord's notice against lease #1: $2,400 rent for the Chapel Street shop, due 2026-09-02 (2 days out, not overdue). Accounting prepared payment request #2; a human approved it, and the lease's next due date moved to 2026-10-02.",
+      "run_id": "run-20261014-012857-d496a5",
+      "handoffs": [
+        "boss -> facilities",
+        "boss -> accounting"
+      ],
+      "agent_contributions": [
+        {
+          "agent": "boss",
+          "did": "Reviewed ticket 102, checked cash, and set the ticket to waiting on human approval.",
+          "times_asked": 1,
+          "mcp_tools_used": [
+            "get_cash_balance",
+            "get_ticket",
+            "update_ticket_status"
+          ]
+        },
+        {
+          "agent": "facilities",
+          "did": "Confirmed lease 1 rent, amount, due date, and that it is not overdue.",
+          "times_asked": 1,
+          "mcp_tools_used": [
+            "get_lease_status",
+            "get_ticket"
+          ]
+        },
+        {
+          "agent": "accounting",
+          "did": "Prepared payment request #2 for the rent; no payment was executed.",
+          "times_asked": 1,
+          "mcp_tools_used": [
+            "get_cash_balance",
+            "get_lease_status",
+            "get_ticket",
+            "list_payment_requests",
+            "prepare_payment"
+          ],
+          "prepared": [
+            "Payment request #2 for $2,400.00 to Elm City Properties, pending approval."
+          ]
+        }
+      ],
+      "human_approvals": [
+        {
+          "action": "approve_payment",
+          "payment_request_id": 2,
+          "payment_id": 2,
+          "what": "Rent for lease #1 to Elm City Properties",
+          "amount": 2400.0,
+          "approved_by": "Gary Chen",
+          "at": "2026-10-14T01:29:27.295",
+          "checking": "$2,560.00 -> $160.00"
+        }
+      ],
+      "cash_change": -2400.0,
+      "drafts_not_sent": [],
+      "usage": {
+        "requests": 14,
+        "input_tokens": 37653,
+        "cached_tokens": 33457,
+        "output_tokens": 1037,
+        "cached_pct": 88.9,
+        "model": "gpt-6-luna"
+      }
+    },
+    {
+      "id": 103,
+      "type": "price_override",
+      "requester": "Yale AI Club",
+      "final_status": "resolved",
+      "outcome": "Only 8 of the 20 size-M navy hoodies were on the shelf (short 12). Accounting priced a 10% bulk discount (quote #1: $52.20 each, $1,044.00 total, $30.20 margin per hoodie, $604 total) and placed no restock order: 12 x $22 = $264 would exceed the $160 left after tickets 101 and 102. Customer Service drafted an offer to the Yale AI Club (draft #2, not sent). A human confirmed the quote. No cash moved.",
+      "run_id": "run-20261014-012945-e001f4",
+      "handoffs": [
+        "boss -> inventory",
+        "boss -> accounting",
+        "boss -> customer_service"
+      ],
+      "agent_contributions": [
+        {
+          "agent": "boss",
+          "did": "Reviewed ticket 103, coordinated the work, and set the ticket to waiting_on_human.",
+          "times_asked": 1,
+          "mcp_tools_used": [
+            "get_cash_balance",
+            "get_ticket",
+            "update_ticket_status"
+          ]
+        },
+        {
+          "agent": "inventory",
+          "did": "Reported 8 available, a 12-unit shortfall, and Bulldog Print Co's five-day lead time (earliest arrival 2026-09-05 if ordered today).",
+          "times_asked": 1,
+          "mcp_tools_used": [
+            "check_stock",
+            "find_vendors",
+            "get_ticket"
+          ]
+        },
+        {
+          "agent": "accounting",
+          "did": "Prepared draft quote #1 for 20 units at $52.20 each, $1,044 total, pending human confirmation.",
+          "times_asked": 1,
+          "mcp_tools_used": [
+            "check_stock",
+            "find_vendors",
+            "get_cash_balance",
+            "get_ticket",
+            "prepare_price_quote"
+          ],
+          "prepared": [
+            "Draft quote #1 for 20 x CC-HOOD-NAVY size M, total $1,044.00; status: draft"
+          ]
+        },
+        {
+          "agent": "customer_service",
+          "did": "Saved message draft #2 to Yale AI Club explaining stock availability and that quote and timing are not confirmed.",
+          "times_asked": 1,
+          "mcp_tools_used": [
+            "draft_customer_message",
+            "get_ticket"
+          ],
+          "prepared": [
+            "Draft #2 saved for Yale AI Club"
+          ]
+        }
+      ],
+      "human_approvals": [
+        {
+          "action": "confirm_price_quote",
+          "quote_id": 1,
+          "what": "10% off 20 x CC-HOOD-NAVY M, $1,044.00 total",
+          "approved_by": "Gary Chen",
+          "at": "2026-10-14T01:30:25.883",
+          "checking": "unchanged at $160.00"
+        }
+      ],
+      "cash_change": 0.0,
+      "drafts_not_sent": [
+        "#2 to Yale AI Club: Your navy hoodie request"
+      ],
+      "usage": {
+        "requests": 19,
+        "input_tokens": 52775,
+        "cached_tokens": 45933,
+        "output_tokens": 1976,
+        "cached_pct": 87.0,
+        "model": "gpt-6-luna"
+      }
+    }
+  ],
+  "notes": "Human approvals were clicked on the dashboard under the name Gary Chen; the vibe coder drove the clicks at Gary's instruction. No agent can call the approve or confirm tools. Full step-by-step record: output/audit_trail.json (entries from seq 99, the reset, onward)."
+}

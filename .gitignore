@@ -1,0 +1,19 @@
+# Secrets / environments
+.env
+**/.env
+.env.*
+!.env.example
+**/.venv/
+**/venv/
+**/__pycache__/
+**/*.pyc
+**/node_modules/
+**/dist/
+.DS_Store
+*.log
+*.zip
+
+# Unlike HW4, data/ IS committed: graders need both campus_customs.db and campus_customs_new.db
+
+# Local vibe-coder tooling (preview launch config, local settings)
+.claude/
