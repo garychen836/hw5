@@ -60,7 +60,48 @@
         "derived": "days_overdue = 2026-08-31 - 2026-08-28 = 3; vendor 1 has 1 open invoice, so vendor_will_ship = false",
         "matches_db": true
       },
-      "rerun_2026-10-13_after_move_to_HW5": "identical output"
+      "rerun_2026-10-13_after_move_to_HW5": "identical output",
+      "output_matches": "data/campus_customs.db (identical to the working copy at test time, SHA-1 f447ca6a\u2026)",
+      "recheck_after_graded_run": {
+        "date": "2026-10-14",
+        "vibe_coder": "Claude Code, session in the HW 5 folder",
+        "tool": "mcp__campus-customs__get_invoice_status",
+        "arguments": {
+          "invoice_id": 501
+        },
+        "output": {
+          "found": true,
+          "today": "2026-08-31",
+          "invoice_id": 501,
+          "description": "Rush reprint CC-TEE-WHITE S",
+          "amount": 840,
+          "due_date": "2026-08-28",
+          "status": "paid",
+          "is_overdue": false,
+          "days_overdue": 0,
+          "vendor": {
+            "id": 1,
+            "name": "Bulldog Print Co",
+            "specialty": "apparel reprint",
+            "lead_days": 5
+          },
+          "vendor_open_invoices": 0,
+          "vendor_open_amount": 0,
+          "vendor_will_ship": true
+        },
+        "what_changed": "Problem 9: a human approved payment #1 ($840), so invoice 501 is now 'paid' and Bulldog Print Co will ship again.",
+        "db_rows_now": {
+          "invoices": {
+            "id": 501,
+            "vendor_id": 1,
+            "amount": 840.0,
+            "due_date": "2026-08-28",
+            "status": "paid",
+            "description": "Rush reprint CC-TEE-WHITE S"
+          }
+        },
+        "matches": "data/campus_customs_new.db as committed"
+      }
     },
     {
       "ticket": 102,
@@ -100,7 +141,40 @@
         "derived": "days_until_due = 2026-09-02 - 2026-08-31 = 2, so not overdue",
         "matches_db": true
       },
-      "rerun_2026-10-13_after_move_to_HW5": "identical output"
+      "rerun_2026-10-13_after_move_to_HW5": "identical output",
+      "output_matches": "data/campus_customs.db (identical to the working copy at test time, SHA-1 f447ca6a\u2026)",
+      "recheck_after_graded_run": {
+        "date": "2026-10-14",
+        "vibe_coder": "Claude Code, session in the HW 5 folder",
+        "tool": "mcp__campus-customs__get_lease_status",
+        "arguments": {
+          "lease_id": 1
+        },
+        "output": {
+          "found": true,
+          "today": "2026-08-31",
+          "lease_id": 1,
+          "space_name": "Chapel Street shop",
+          "landlord": "Elm City Properties",
+          "monthly_rent": 2400,
+          "next_due": "2026-10-02",
+          "days_until_due": 32,
+          "is_overdue": false,
+          "notes": null
+        },
+        "what_changed": "Problem 9: a human approved the $2,400 rent (payment #2), so lease 1's next_due moved from 2026-09-02 to 2026-10-02 (32 days after the shop's today).",
+        "db_rows_now": {
+          "leases": {
+            "id": 1,
+            "space_name": "Chapel Street shop",
+            "landlord": "Elm City Properties",
+            "monthly_rent": 2400.0,
+            "next_due": "2026-10-02",
+            "notes": null
+          }
+        },
+        "matches": "data/campus_customs_new.db as committed"
+      }
     },
     {
       "ticket": 103,
@@ -163,13 +237,68 @@
         "derived": "shortfall = 20 - 8 = 12; margin_per_unit = 58 - 22 = 36",
         "matches_db": true
       },
-      "rerun_2026-10-13_after_move_to_HW5": "identical output"
+      "rerun_2026-10-13_after_move_to_HW5": "identical output",
+      "output_matches": "data/campus_customs.db (identical to the working copy at test time, SHA-1 f447ca6a\u2026)",
+      "recheck_after_graded_run": {
+        "date": "2026-10-14",
+        "vibe_coder": "Claude Code, session in the HW 5 folder",
+        "tool": "mcp__campus-customs__check_stock",
+        "arguments": {
+          "sku": "CC-HOOD-NAVY",
+          "size": "M",
+          "qty_needed": 20
+        },
+        "output": {
+          "found": true,
+          "sku": "CC-HOOD-NAVY",
+          "name": "Basic Hoodie Big Yale",
+          "location": "Aisle A",
+          "size": "M",
+          "size_exists": true,
+          "qty_on_hand": 8,
+          "qty_needed": 20,
+          "shortfall": 12,
+          "can_fill_from_stock": false,
+          "all_sizes": {
+            "L": 14,
+            "M": 8,
+            "S": 4,
+            "XL": 6
+          },
+          "unit_cost": 22,
+          "list_price": 58,
+          "margin_per_unit": 36
+        },
+        "what_changed": "Unchanged: no tool sells or receives stock, so size M is still 8 on hand.",
+        "db_rows_now": {
+          "inventory": [
+            {
+              "size": "L",
+              "qty": 14
+            },
+            {
+              "size": "M",
+              "qty": 8
+            },
+            {
+              "size": "S",
+              "qty": 4
+            },
+            {
+              "size": "XL",
+              "qty": 6
+            }
+          ]
+        },
+        "matches": "data/campus_customs_new.db as committed"
+      }
     }
   ],
   "summary": {
     "tools_tested": 3,
-    "all_outputs_match_db": true,
-    "database_unchanged_after_tests": "yes; both .db files still hash to SHA-1 f447ca6a2766a90f3c1f81215c8f774ab109ea4c (the tools are read-only)"
+    "all_outputs_match_db": "Original outputs match campus_customs.db (the state at test time); recheck outputs match the committed campus_customs_new.db.",
+    "database_unchanged_after_tests": "yes at the time (2026-10-13): both .db files still hashed to SHA-1 f447ca6a\u2026 because these tools are read-only. The working copy changed later, in Problem 9's graded run (see database_state_note)."
   },
-  "student_prompt_note": "student_prompt is what the student actually typed (one instruction covering all three tools). Each test's prompt is the ticket-specific request the vibe coder turned that instruction into before calling the tool."
+  "student_prompt_note": "student_prompt is what the student actually typed (one instruction covering all three tools). Each test's prompt is the ticket-specific request the vibe coder turned that instruction into before calling the tool.",
+  "database_state_note": "The 'output' of each test was captured in Problem 4 (2026-10-13), when campus_customs_new.db was still an exact copy of the original campus_customs.db; those values match campus_customs.db. Problem 9's graded run then paid invoice 501 and the rent, so the committed campus_customs_new.db differs for two tools. Each test therefore also has 'recheck_after_graded_run': the same tool called again from Claude Code on 2026-10-14 against the committed working copy, and those values match campus_customs_new.db as it is in the repo."
 }

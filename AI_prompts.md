@@ -256,3 +256,9 @@ This file records the prompts I typed to my vibe coder for HW 5 (Campus Customs 
 > you have my github right? if not i will give you credential
 
 (No credentials were needed: the GitHub CLI was already logged in as garychen836 from HW 4.)
+
+### Prompt 4 (follow-up prompt, final sanity check)
+
+> ok, so everything looks good? Check again from head to tail
+
+**What was lacking:** A full audit of a fresh clone passed every problem except one: `output/mcp_smoke.json` (Problem 4) showed invoice 501 as `open` and rent due 2026-09-02, which matched the working database when tested but no longer matches the committed `campus_customs_new.db` after Problem 9 paid both. Each test now keeps its original output (marked as matching `campus_customs.db`) plus a live re-check from Claude Code against the committed working copy (invoice `paid`, rent due 2026-10-02, hoodies still 8), and the harness no longer calls the working copy a byte-for-byte copy of the original.

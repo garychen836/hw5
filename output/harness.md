@@ -17,7 +17,7 @@ This file describes everything the agent team works with. It grew problem by pro
 ## 1. Database
 
 - **Original:** `data/campus_customs.db` — never edited. It is the reset point for a clean run.
-- **Working copy:** `data/campus_customs_new.db` — a byte-for-byte copy of the original (same SHA-1, `f447ca6a…`). The MCP server and backend read and write only this file.
+- **Working copy:** `data/campus_customs_new.db` started as a byte-for-byte copy of the original (same SHA-1, `f447ca6a…`). The MCP server and backend read and write only this file. **The committed copy holds the end state of the graded run (Problem 9):** tickets 101–103 resolved, invoice 501 paid, rent paid (lease `next_due` 2026-10-02), checking $160.00, plus the four tables the MCP server adds.
 - **To reset:** copy `campus_customs.db` over `campus_customs_new.db` again.
 
 ### Tables
