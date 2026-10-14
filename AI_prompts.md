@@ -249,6 +249,8 @@ This file records the prompts I typed to my vibe coder for HW 5 (Campus Customs 
 
 > after finish, sanity check — [screenshots of the full Problem 11 page]
 
+**Result:** Nothing was lacking. The repo is public (anonymous access returns 200), and a fresh clone matches the expected layout file for file, has no `.env`, and carries both databases byte-identical to my local ones (working copy = graded end state, $160.00). Following the README in the clone worked: `pip install -r requirements.txt`, `npm install` + build, the MCP server listed its 16 tools, and `uvicorn main:app --reload --port 8000` from `backend/` reported gpt-6-luna. The README covers all five required steps.
+
 ### Prompt 3 (additional prompt)
 
 > you have my github right? if not i will give you credential
